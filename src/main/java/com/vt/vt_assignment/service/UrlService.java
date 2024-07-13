@@ -1,3 +1,10 @@
 package com.vt.vt_assignment.service;
 
-public interface UrlService {}
+import com.vt.vt_assignment.entity.Url;
+import java.util.Optional;
+
+public interface UrlService {
+  public String shortenUrl(String originalUrl);
+
+  Optional<Url> getOriginalUrl(String shortUrl);
+}
