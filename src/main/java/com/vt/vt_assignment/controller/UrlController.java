@@ -3,6 +3,8 @@ package com.vt.vt_assignment.controller;
 import com.vt.vt_assignment.entity.Url;
 import com.vt.vt_assignment.service.UrlService;
 import jakarta.validation.Valid;
+
+import java.time.LocalDateTime;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,9 +28,13 @@ public class UrlController {
   public ResponseEntity<?> redirectToOriginalUrl(@PathVariable String shortenString) {
     Optional<Url> url = urlService.getOriginalUrl(shortenString);
     if (url.isPresent()) {
-      return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
-          .header("Location", url.get().getOriginalUrl())
-          .build();
+      if (url.get().getExpiryDate().isAfter(LocalDateTime.now())) {
+        return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
+            .header("Location", url.get().getOriginalUrl())
+            .build();
+      }else{
+        return ResponseEntity.status(HttpStatus.GONE).body("Url has expired");
+      }
     } else {
       return ResponseEntity.notFound().build();
     }
