@@ -9,4 +9,6 @@ public interface UrlService {
   Optional<Url> getOriginalUrl(String shortUrl);
 
   Boolean updateShortUrl(String shortUrl, String newLongUrl);
+
+  Boolean updateExpiry(String shortUrl, int daysToAdd);
 }

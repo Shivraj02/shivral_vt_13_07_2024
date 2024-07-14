@@ -44,4 +44,15 @@ public class UrlController {
       return ResponseEntity.notFound().build();
     }
   }
+
+  @PostMapping("/expiry/{shortUrl}")
+  public ResponseEntity<?> updateExpiry(@PathVariable String shortUrl, @RequestParam int daysToAdd) {
+    boolean updated = urlService.updateExpiry(shortUrl, daysToAdd);
+    if (updated) {
+      return ResponseEntity.ok("Expiry updated successfully");
+    } else {
+      return ResponseEntity.notFound().build();
+    }
+  }
+
 }

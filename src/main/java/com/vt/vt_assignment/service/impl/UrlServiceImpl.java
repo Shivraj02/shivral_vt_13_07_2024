@@ -49,4 +49,16 @@ public class UrlServiceImpl implements UrlService {
     return false;
   }
 
+  @Override
+  public Boolean updateExpiry(String shortUrl, int daysToAdd) {
+    Optional<Url> UrlOptional = UrlRepository.findByShortUrl(shortUrl);
+    if (UrlOptional.isPresent()) {
+      Url url = UrlOptional.get();
+      url.setExpiryDate(url.getExpiryDate().plusDays(daysToAdd));
+      UrlRepository.save(url);
+      return true;
+    }
+    return false;
+  }
+
 }
