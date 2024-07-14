@@ -36,4 +36,17 @@ public class UrlServiceImpl implements UrlService {
   public Optional<Url> getOriginalUrl(String shortUrl) {
     return UrlRepository.findByShortUrl(shortUrl);
   }
+
+  @Override
+  public Boolean updateShortUrl(String shortUrl, String newOriginalUrl) {
+    Optional<Url> UrlOptional = UrlRepository.findByShortUrl(shortUrl);
+    if (UrlOptional.isPresent()) {
+      Url Url = UrlOptional.get();
+      Url.setOriginalUrl(newOriginalUrl);
+      UrlRepository.save(Url);
+      return true;
+    }
+    return false;
+  }
+
 }

@@ -7,4 +7,6 @@ public interface UrlService {
   public String shortenUrl(String originalUrl);
 
   Optional<Url> getOriginalUrl(String shortUrl);
+
+  Boolean updateShortUrl(String shortUrl, String newLongUrl);
 }
