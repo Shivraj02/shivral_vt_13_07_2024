@@ -29,7 +29,7 @@ public class UrlServiceImpl implements UrlService {
     Url.setExpiryDate(LocalDateTime.now().plusMonths(10));
     UrlRepository.save(Url);
 
-    return BASE_Url + "url/" + shortUrl;
+    return BASE_Url + "url/shortUrl/" + shortUrl;
   }
 
   @Override
@@ -60,5 +60,4 @@ public class UrlServiceImpl implements UrlService {
     }
     return false;
   }
-
 }
