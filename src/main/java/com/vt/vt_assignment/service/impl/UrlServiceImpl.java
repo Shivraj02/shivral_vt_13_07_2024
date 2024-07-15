@@ -1,6 +1,9 @@
 package com.vt.vt_assignment.service.impl;
 
-import com.vt.vt_assignment.entity.Url;
+import com.vt.vt_assignment.entity.dao.Url;
+import com.vt.vt_assignment.entity.dto.OriginalUrlDto;
+import com.vt.vt_assignment.entity.dto.ShortUrlDaysToAddDto;
+import com.vt.vt_assignment.entity.dto.ShortUrlDto;
 import com.vt.vt_assignment.repository.UrlRepository;
 import com.vt.vt_assignment.service.UrlService;
 import com.vt.vt_assignment.utils.Base62;
@@ -18,13 +21,13 @@ public class UrlServiceImpl implements UrlService {
   private final String BASE_Url = "http://localhost:8080/";
 
   @Override
-  public String shortenUrl(String originalUrl) {
+  public String shortenUrl(OriginalUrlDto originalUrl) {
     SecureRandom secureRandom = new SecureRandom();
     long id = Math.abs(secureRandom.nextLong());
     String shortUrl = Base62.encode(id);
 
     Url Url = new Url();
-    Url.setOriginalUrl(originalUrl);
+    Url.setOriginalUrl(originalUrl.getOriginalUrl());
     Url.setShortUrl(shortUrl);
     Url.setExpiryDate(LocalDateTime.now().plusMonths(10));
     UrlRepository.save(Url);
@@ -33,8 +36,8 @@ public class UrlServiceImpl implements UrlService {
   }
 
   @Override
-  public Optional<Url> getOriginalUrl(String shortUrl) {
-    return UrlRepository.findByShortUrl(shortUrl);
+  public Optional<Url> getOriginalUrl(ShortUrlDto shortUrl) {
+    return UrlRepository.findByShortUrl(shortUrl.getShortUrl());
   }
 
   @Override
@@ -50,11 +53,11 @@ public class UrlServiceImpl implements UrlService {
   }
 
   @Override
-  public Boolean updateExpiry(String shortUrl, int daysToAdd) {
-    Optional<Url> UrlOptional = UrlRepository.findByShortUrl(shortUrl);
+  public Boolean updateExpiry(ShortUrlDaysToAddDto shortUrlDaysToAddDto) {
+    Optional<Url> UrlOptional = UrlRepository.findByShortUrl(shortUrlDaysToAddDto.getShortUrl());
     if (UrlOptional.isPresent()) {
       Url url = UrlOptional.get();
-      url.setExpiryDate(url.getExpiryDate().plusDays(daysToAdd));
+      url.setExpiryDate(url.getExpiryDate().plusDays(shortUrlDaysToAddDto.getDaysToAdd()));
       UrlRepository.save(url);
       return true;
     }

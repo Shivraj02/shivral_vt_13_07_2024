@@ -1,4 +1,4 @@
-package com.vt.vt_assignment.entity;
+package com.vt.vt_assignment.entity.dao;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
